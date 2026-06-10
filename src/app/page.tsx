@@ -106,6 +106,14 @@ export default async function Home() {
             {current.description && (
               <p className="mt-2 text-sm opacity-95">{current.description}</p>
             )}
+            {current.scheduled_for && (
+              <a
+                href={`/calendar/${current.id}`}
+                className="mt-4 inline-block rounded-full bg-white/20 px-4 py-2 text-sm font-semibold backdrop-blur transition active:scale-95"
+              >
+                📅 Add to calendar
+              </a>
+            )}
           </div>
 
           <RatingForm
