@@ -26,6 +26,52 @@ export async function submitRating(formData: FormData) {
   revalidatePath("/");
 }
 
+export async function addDate(formData: FormData) {
+  const title = ((formData.get("title") as string) || "").trim();
+  const description = ((formData.get("description") as string) || "").trim();
+  const scheduledFor = (formData.get("scheduledFor") as string) || null;
+
+  if (!title) throw new Error("A date needs a title!");
+
+  // The app shows a single "up next" date, so planning a new one
+  // moves any current upcoming date into history.
+  const { error: completeError } = await supabase
+    .from("dates")
+    .update({ status: "completed" })
+    .eq("status", "upcoming");
+
+  if (completeError) throw new Error(completeError.message);
+
+  const { error } = await supabase.from("dates").insert({
+    title,
+    description,
+    scheduled_for: scheduledFor,
+    status: "upcoming",
+  });
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/");
+}
+
+export async function recordPhoto(formData: FormData) {
+  const dateId = formData.get("dateId") as string;
+  const storagePath = formData.get("storagePath") as string;
+  const caption = ((formData.get("caption") as string) || "").trim() || null;
+
+  if (!dateId || !storagePath) {
+    throw new Error("Missing required fields");
+  }
+
+  const { error } = await supabase
+    .from("photos")
+    .insert({ date_id: dateId, storage_path: storagePath, caption });
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/");
+}
+
 export async function suggestNewDate(formData: FormData) {
   const currentDateId = formData.get("dateId") as string;
 

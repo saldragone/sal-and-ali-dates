@@ -5,6 +5,12 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+export const PHOTO_BUCKET = "date-photos";
+
+export function photoUrl(storagePath: string) {
+  return `${supabaseUrl}/storage/v1/object/public/${PHOTO_BUCKET}/${storagePath}`;
+}
+
 export type Rater = "sal" | "ali";
 
 export type DateIdea = {
@@ -32,5 +38,13 @@ export type Rating = {
   rater: Rater;
   rating: number;
   comment: string | null;
+  created_at: string;
+};
+
+export type Photo = {
+  id: string;
+  date_id: string;
+  storage_path: string;
+  caption: string | null;
   created_at: string;
 };

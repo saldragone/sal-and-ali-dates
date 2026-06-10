@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff7f9;
+  --foreground: #3d2230;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-pacifico);
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at 15% 0%, #ffe4ec 0%, transparent 45%),
+    radial-gradient(circle at 85% 10%, #fde8ff 0%, transparent 40%),
+    var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-pacifico), cursive;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.25);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.15);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.8s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes meter-fill {
+  from {
+    width: 0%;
+  }
+}
+
+.animate-meter {
+  animation: meter-fill 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
